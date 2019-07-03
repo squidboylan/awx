@@ -18,7 +18,7 @@ from awx import __version__ as awx_application_version
 from awx.api.versioning import reverse
 from awx.main.managers import InstanceManager, InstanceGroupManager
 from awx.main.fields import JSONField
-from awx.main.models.base import BaseModel, HasEditsMixin
+from awx.main.models.base import BaseModel, HasEditsMixin, prevent_search
 from awx.main.models.unified_jobs import UnifiedJob
 from awx.main.utils import get_cpu_capacity, get_mem_capacity, get_system_task_capacity
 from awx.main.models.mixins import RelatedJobsMixin
@@ -184,6 +184,10 @@ class InstanceGroup(HasPolicyEditsMixin, BaseModel, RelatedJobsMixin):
         default=None,
         on_delete=models.SET_NULL,
     )
+    pod_spec_override = prevent_search(models.TextField(
+        blank=True,
+        default='',
+    ))
     policy_instance_percentage = models.IntegerField(
         default=0,
         help_text=_("Percentage of Instances to automatically assign to this group")
