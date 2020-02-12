@@ -44,6 +44,32 @@ in `awx_collection/test/awx`. These tests require that python packages
 are available for all of `awx`, `ansible`, `tower_cli`, and the collection
 itself.
 
+## Running Integration Tests
+
+In order to run the tests in `awx_collection/tests/integration` you must first
+configure tower-cli by doing the following:
+
+```
+tower-cli config host $HOSTNAME
+tower-cli config username $USERNAME
+tower-cli config password $PASSWORD
+tower-cli config verify_ssl false # This is only necessary if you use self signed certs
+```
+
+next install the collection:
+
+```
+make install_collection
+```
+
+then cd to the directory where the collection is installed and run
+`ansible-test integration`
+
+```
+cd :~/.ansible/collections/ansible_collections/awx/awx
+ansible-test integration
+```
+
 ### Inside Development Container
 
 The target `make prepare_collection_venv` will prepare some requirements
