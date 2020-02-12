@@ -5,7 +5,7 @@ from ansible.module_utils.basic import AnsibleModule, env_fallback
 from ansible.module_utils.urls import Request, SSLValidationError, ConnectionError
 from ansible.module_utils.six import PY2
 from ansible.module_utils.six.moves import StringIO
-from ansible.module_utils.six.moves.urllib.parse import urlparse, urlencode
+from ansible.module_utils.six.moves.urllib.parse import urlparse, urlencode, quote
 from ansible.module_utils.six.moves.urllib.error import HTTPError
 from ansible.module_utils.six.moves.http_cookiejar import CookieJar
 from ansible.module_utils.six.moves.configparser import ConfigParser, NoOptionError
@@ -288,7 +288,7 @@ class TowerModule(AnsibleModule):
             headers['Authorization'] = 'Bearer {0}'.format(self.oauth_token)
 
         # Update the URL path with the endpoint
-        self.url = self.url._replace(path=endpoint)
+        self.url = self.url._replace(path=quote(endpoint))
 
         if method in ['POST', 'PUT', 'PATCH']:
             headers.setdefault('Content-Type', 'application/json')
